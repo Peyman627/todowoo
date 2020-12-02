@@ -79,8 +79,14 @@ def createtodo(request):
     if request.method == 'GET':
         return render(request, 'todo/createtodo.html', {'form': TodoForm()})
     else:
-        form = TodoForm(request.POST)
-        todo = form.save(commit=False)
-        todo.user = request.user
-        todo.save()
-        return redirect('currenttodos')
+        try:
+            form = TodoForm(request.POST)
+            todo = form.save(commit=False)
+            todo.user = request.user
+            todo.save()
+            return redirect('currenttodos')
+        except ValueError:
+            return render(request, 'todo/createtodo.html', {
+                'form': TodoForm(),
+                'error': 'Something went wrong'
+            })
