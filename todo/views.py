@@ -70,7 +70,7 @@ def logoutuser(request):
 
 
 def currenttodos(request):
-    todos = Todo.objects.all()
+    todos = Todo.objects.filter(user=request.user)
     context = {'todos': todos}
     return render(request, 'todo/currenttodos.html', context)
 
