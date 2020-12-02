@@ -5,6 +5,7 @@ from django.db import IntegrityError
 from django.contrib.auth import login, logout, authenticate
 
 from .models import Todo
+from .forms import TodoForm
 
 
 def home(request):
@@ -72,3 +73,14 @@ def currenttodos(request):
     todos = Todo.objects.all()
     context = {'todos': todos}
     return render(request, 'todo/currenttodos.html', context)
+
+
+def createtodo(request):
+    if request.method == 'GET':
+        return render(request, 'todo/createtodo.html', {'form': TodoForm()})
+    else:
+        form = TodoForm(request.POST)
+        todo = form.save(commit=False)
+        todo.user = request.user
+        todo.save()
+        return redirect('currenttodos')
