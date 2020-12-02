@@ -4,6 +4,8 @@ from django.contrib.auth.models import User
 from django.db import IntegrityError
 from django.contrib.auth import login, logout, authenticate
 
+from .models import Todo
+
 
 def home(request):
     return render(request, 'todo/home.html')
@@ -67,4 +69,6 @@ def logoutuser(request):
 
 
 def currenttodos(request):
-    return render(request, 'todo/currenttodos.html')
+    todos = Todo.objects.all()
+    context = {'todos': todos}
+    return render(request, 'todo/currenttodos.html', context)
