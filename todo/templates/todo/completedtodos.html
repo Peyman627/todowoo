@@ -6,7 +6,7 @@
 <ul>
     {% for todo in todos %}
     <li>
-        <a href="{% url 'viewtodo' todo.id %}">{% if todo.important %}<b>{{ todo.title }}</b></a>
+        <a href="{% url 'viewtodo' todo.id %}">{% if todo.important %}<strong>{{ todo.title }}</strong></a>
         {% else %}
         <a href="{% url 'viewtodo' todo.id %}">{{ todo.title }}</a>
         {% endif %}
