@@ -76,6 +76,13 @@ def currenttodos(request):
     return render(request, 'todo/currenttodos.html', context)
 
 
+def completedtodos(request):
+    todos = Todo.objects.filter(user=request.user,
+                                date_completed__isnull=False)
+    context = {'todos': todos}
+    return render(request, 'todo/completedtodos.html', context)
+
+
 def createtodo(request):
     if request.method == 'GET':
         return render(request, 'todo/createtodo.html', {'form': TodoForm()})
