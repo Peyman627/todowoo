@@ -13,6 +13,7 @@
 
     </li>
     <p>{% if todo.memo %}{{ todo.memo }}{% endif %}</p>
+    {{ todo.date_completed | date:'M j Y H:i' }}
     {% endfor %}
 </ul>
 {% endblock %}
