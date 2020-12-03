@@ -4,7 +4,8 @@
 <h1>Current</h1>
 <ul>
     {% for todo in todos %}
-    <li>{% if todo.important %}<b>{{ todo.title }}</b>
+    <li>
+        <a href="{% url 'viewtodo' todo.id %}">{% if todo.important %}<b>{{ todo.title }}</b></a>
         {% else %}
         {{ todo.title }}
         {% endif %}

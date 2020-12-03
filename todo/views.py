@@ -1,8 +1,9 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from django.db import IntegrityError
 from django.contrib.auth import login, logout, authenticate
+from django.utils import timezone
 
 from .models import Todo
 from .forms import TodoForm
@@ -90,3 +91,29 @@ def createtodo(request):
                 'form': TodoForm(),
                 'error': 'Something went wrong'
             })
+
+
+def viewtodo(request, todo_pk):
+    todo = get_object_or_404(Todo, pk=todo_pk, user=request.user)
+    form = TodoForm(instance=todo)
+    if request.method == 'POST':
+        try:
+            form = TodoForm(request.POST, instance=todo)
+            form.save()
+            return redirect('currenttodos')
+        except ValueError:
+            return render(request, 'todo/viewtodo.html', {
+                'todo': todo,
+                'form': form,
+                'error': 'Something went wrong'
+            })
+
+    return render(request, 'todo/viewtodo.html', {'todo': todo, 'form': form})
+
+
+def completetodo(request, todo_pk):
+    todo = get_object_or_404(Todo, pk=todo_pk, user=request.user)
+    if request.method == 'POST':
+        todo.date_completed = timezone.now()
+        todo.save()
+        return redirect('currenttodos')
